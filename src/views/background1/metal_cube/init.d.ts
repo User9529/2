@@ -175,7 +175,7 @@ export default function() {
       gltfModel.position.set(0, 0, -15);
 
       // 初始化物理系统
-      gltfForce.position.copy(gltfModel.position);
+      gltf.scene.position.copy(gltfModel.position);
       gltfForce.anchor.copy(gltfModel.position);
       gltfForce.velocity.set(0, 0, 0);
 
