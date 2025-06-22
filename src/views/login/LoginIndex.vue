@@ -166,13 +166,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRefs } from 'vue';
-import { ElNotification } from 'element-plus';
+import { ref, reactive, toRefs, onMounted , watch } from 'vue';import
+{ ElNotification } from 'element-plus';
 import { type NewUserVO, registerUserApi } from '@/api/register/RegisterApi.ts';
 import { type LoginUserVO, loginUserApi } from '@/api/login/LoginApi.ts';
 import router from '@/router';
 import type { ObjectFitProperty } from 'csstype';
 import axios from 'axios'
+import { useSuserStore } from '@/stores/userStore';
+import { LRStore } from '@/stores/LRStore';
+
+const lrStore = LRStore();
+
 
 const state = reactive({
   fits: [
@@ -254,7 +259,7 @@ async function completeRegistration() {
 async function handleLogin() {
   const { userName, password } = uselogin.value;
 
-  // 检查账号密码是否为空
+
   if (!userName || !password) {
     showNotification('警告', '账号或密码不能为空', 'warning');
     return;
@@ -264,16 +269,16 @@ async function handleLogin() {
     const result = await loginUserApi(uselogin.value);
     console.log(result);
 
-    // 处理登录结果
     if (result.code === 200) {
       localStorage.setItem('token', result.token);
+      const userStore = useSuserStore();
+      userStore.setUserData(result as any);
+      console.log(userStore.userData);
       showNotification('成功', '登录成功，正在跳转...', 'success');
       router.push('/');
     } else if (result.message === '用户名错误！' || result.message === '密码错误！') {
-      // 用户名或密码错误
       showNotification('错误', result.message, 'error');
     } else {
-      // 其他错误
       showNotification('错误', '登录失败，请重试', 'error');
     }
   } catch (error) {
@@ -290,10 +295,17 @@ async function handleLogin() {
     }
   }
 }
+onMounted(() => {
+  isLoginPage.value = lrStore.isLoginPage;
+  console.log(isLoginPage.value);
+});
+watch(() => lrStore.isLoginPage, (newValue) => {
+  isLoginPage.value = newValue;
+  console.log(newValue);
+});
 </script>
 
 <style lang="scss" >
-//scss比较乱
 @use 'resources/style.scss';
 
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';

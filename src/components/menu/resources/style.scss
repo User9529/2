@@ -9,6 +9,7 @@
 }
 .search-container {
   display: flex;
+  margin-right: 30px;
   justify-content: center;
   align-items: center;
 }
@@ -59,7 +60,7 @@
 }
 
 ::v-deep .breadcrumb-container {
-  margin-left: 20px;
+  margin-right: 300px;
   display: flex;
   align-items: center;
 }
@@ -71,21 +72,36 @@
 
 ::v-deep .login-link {
   color: #409EFF !important;
+  background: rgba(255, 255, 255, 0) !important;
 }
 
 ::v-deep .register-link {
   color: #67C23A !important;
+  background: rgba(255, 255, 255, 0) !important;
+}
+::v-deep .register-link:hover {
+  color: #85ce61 !important;
+  background: rgba(255, 255, 255, 0) !important;
 }
 
 ::v-deep .login-link:hover {
   color: #66b1ff !important;
+  background: rgba(255, 255, 255, 0) !important;
+
 }
 
-::v-deep .register-link:hover {
+::v-deep .logout-link {
+  color: #67C23A !important;
+  background: rgba(255, 255, 255, 0) !important;
+
+}
+::v-deep .logout-link:hover {
   color: #85ce61 !important;
+  background: rgba(255, 255, 255, 0) !important;
+
 }
 ::v-deep .el-breadcrumb__inner {
-  margin-right: 10px;
+  margin-right: 10px!important;
 }
 
 ::v-deep .el-breadcrumb__separator {

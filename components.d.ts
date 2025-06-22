@@ -8,6 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Background1Index: typeof import('./src/components/background1/Background1Index.vue')['default']
+    Background2Index: typeof import('./src/components/background2/Background2Index.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']

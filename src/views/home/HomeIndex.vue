@@ -1,9 +1,11 @@
 <template>
+  <div class="el-button-home">
   <el-button :plain="true" @click="open5">tttt</el-button>
   <el-button :plain="true" @click="open2">wwww</el-button>
   <el-button :plain="true" @click="open3">eeee</el-button>
   <el-button :plain="true" @click="open1">qqqq</el-button>
   <el-button :plain="true" @click="open4">rrrr</el-button>
+  </div>
 </template>
 
 <script lang="ts" setup>

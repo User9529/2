@@ -22,7 +22,7 @@ onMounted(() => {
   height: 100%;
   overflow: hidden;
   z-index: -2; /* 确保背景处于最底层 */
-  opacity: 0.9;
+  opacity: 0.5;
 }
 
 .p-canvas-webgl {

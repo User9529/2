@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MenuIndex from './components/menu/MenuIndex.vue'
-import Background1Index from '@/views/background1/Background1Index.vue';
+import Background1Index from '@/components/background1/Background1Index.vue';
 </script>
 
 <template>

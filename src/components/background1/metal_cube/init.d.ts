@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { debounce } from '@ykob/js-util';
 
-import {GLTFLoader} from "three/addons"
+import { GLTFLoader } from "three/addons"
 import backgroundFS from './glsl/background.fs'
 import backgroundVS from './glsl/background.vs'
 import objectVS from './glsl/object.vs';
@@ -21,9 +21,7 @@ export default function() {
   const camera = new ForceCamera(35, window.innerWidth / window.innerHeight, 1, 10000);
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-// 设置光源的方向：通过光源position属性和目标指向对象的position属性计算
   directionalLight.position.set(80, 100, 50);
-// 方向光默认指向xyz坐标原点
   scene.add(directionalLight);
   const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(ambientLight);
@@ -33,8 +31,7 @@ export default function() {
   const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
-  // process for this sketch.
-  //
+
   const raycaster = new THREE.Raycaster();
   let intersects = null;
   const cube_force = new Force3();
@@ -78,8 +75,8 @@ export default function() {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.name = 'MetalCube';
     return mesh;
-
   };
+
   const createBackground =  function() {
     const geometry = new THREE.OctahedronGeometry(30, 4);
     const material = new THREE.ShaderMaterial({
@@ -121,7 +118,6 @@ export default function() {
     raycaster.setFromCamera(vector, camera);
     intersects = raycaster.intersectObjects(scene.children, true);
 
-
     // 检查是否有物体被射线击中
     if (intersects.length > 0) {
       const intersectedObject = intersects[0].object;
@@ -135,9 +131,8 @@ export default function() {
           Util.getRadian(Util.getRandomInt(0, 360)),
           Util.getRandomInt(30, 90) / 10
         ));
-        cube_force2.applyForce(new THREE.Vector3(1, 0, 0));
       }
-      // 如果是GLB模型（修改判断逻辑）
+      // 如果是GLB模型
       else if (gltfModel && isPartOfGLTFModel(intersectedObject)) {
         if (gltfForce.acceleration.length() > 0.1) return;
 
@@ -147,7 +142,6 @@ export default function() {
           Util.getRadian(Util.getRandomInt(0, 360)),
           Util.getRandomInt(30, 90) / 10
         ));
-
         // 添加随机旋转速度
         rotationSpeed.set(
           (Math.random() - 0.5) * maxRotationSpeed,
@@ -161,30 +155,24 @@ export default function() {
   const plane = createPlaneForRaymarching();
   const bg = createBackground();
 
-
   const initSketch = () => {
-    scene.add(plane);
     scene.add(bg);
+      // scene.add(plane);
 
     const loader = new GLTFLoader()
     loader.load("public/cartoon_shopping_cart.glb",function(gltf) {
       gltfModel = gltf.scene
-      scene.add(gltfModel);
+      // scene.add(gltfModel);
 
-      // 设置初始位置
       gltfModel.position.set(0, 0, -15);
-
-      // 初始化物理系统
       gltf.scene.position.copy(gltfModel.position);
       gltfForce.anchor.copy(gltfModel.position);
       gltfForce.velocity.set(0, 0, 0);
 
-      // 添加调试名称
       gltfModel.name = 'ShoppingCart';
       gltfModel.traverse(function(child) {
         if (child.isMesh) {
           child.name = 'CartPart';
-          // 设置材质属性增强视觉效果
           if (child.material) {
             child.material.metalness = 0.8;
             child.material.roughness = 0.2;
@@ -201,10 +189,6 @@ export default function() {
     camera.setPolarCoord(0, Util.getRadian(90), 24);
   }
 
-  //
-  // common process
-  //
-
   const resizeWindow = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -213,6 +197,7 @@ export default function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     plane.material.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
   }
+
   const render = () => {
     moveObjects(scene, camera, vactor_raycast);
     cube_force.applyHook(0, 0.12);
@@ -230,7 +215,6 @@ export default function() {
         gltfModel.rotation.y += rotationSpeed.y;
         gltfModel.rotation.z += rotationSpeed.z;
 
-        // 应用旋转阻尼
         rotationSpeed.multiplyScalar(rotationDamping);
       }
     }
@@ -255,10 +239,12 @@ export default function() {
 
     renderer.render(scene, camera);
   }
+
   const renderLoop = () => {
     render();
     requestAnimationFrame(renderLoop);
   }
+
   const on = () => {
     const vectorTouchStart = new THREE.Vector2();
     const vectorTouchMove = new THREE.Vector2();
@@ -268,16 +254,26 @@ export default function() {
       vectorTouchStart.set(x, y);
       normalizeVector2(vectorTouchStart);
     };
+
     const touchMove = (x, y) => {
       vectorTouchMove.set(x, y);
       normalizeVector2(vectorTouchMove);
       vactor_raycast = vectorTouchMove;
     };
+
     const touchEnd = (x, y) => {
       vectorTouchEnd.set(x, y);
     };
+
     const mouseOut = () => {
       vectorTouchEnd.set(0, 0);
+    };
+
+    // 页面点击事件处理
+    const handleClick = (event) => {
+      event.preventDefault();
+      cube_force2.applyForce(new THREE.Vector3(1, 0, 0));
+      console.log('点击施加力');
     };
 
     window.addEventListener('resize', debounce(() => {
@@ -291,7 +287,7 @@ export default function() {
       event.preventDefault();
       touchMove(event.clientX, event.clientY, false);
     });
-    canvas.addEventListener('mouseup', function (event) {
+    window.addEventListener('mouseup', function (event) {
       event.preventDefault();
       touchEnd(event.clientX, event.clientY, false);
     });
@@ -311,6 +307,9 @@ export default function() {
       event.preventDefault();
       mouseOut();
     });
+
+    // 添加点击事件监听
+    window.addEventListener('click', handleClick);
   }
 
   const init = () => {
