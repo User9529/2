@@ -273,7 +273,6 @@ export default function() {
     const handleClick = (event) => {
       event.preventDefault();
       cube_force2.applyForce(new THREE.Vector3(1, 0, 0));
-      console.log('点击施加力');
     };
 
     window.addEventListener('resize', debounce(() => {

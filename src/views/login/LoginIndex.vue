@@ -25,6 +25,7 @@
         <!-- 登录 -->
         <div v-if="isLoginPage" class="login-content">
           <!-- 登录表单 -->
+          <form @submit.prevent="handleLogin">
           <div class="other-login">
             <img src="@/assets/WeChat.png" alt="">
             <span>Sign With WeChat</span>
@@ -65,8 +66,8 @@
                 Forget password
               </span>
             </div>
-            <button class="btn" @click="handleLogin">Login</button></div>
-
+            <button class="btn" @click="handleLogin" type="submit">Login</button></div>
+          </form>
           <span class="register" @click="toggleToRegister">
             {{ isLoginPage ? "Not register yet? Create An Account" : "已有账户? 立即登录" }}
           </span>
@@ -89,11 +90,11 @@
                 <div class="form">
                   <div class="input-wrapper">
                     <span class="input-tips">昵称</span>
-                    <input v-model="newUser.account" type="text" class="ipt" placeholder="User6666">
+                    <input v-model="newUser.name" type="text" class="ipt" placeholder="User6666">
                   </div>
                   <div class="input-wrapper">
                     <span class="input-tips">账号</span>
-                    <input v-model="newUser.account" type="text" class="ipt" placeholder="311***@qq.com">
+                    <input v-model="newUser.userName" type="text" class="ipt" placeholder="311***@qq.com">
                   </div>
                   <div class="input-wrapper">
                     <span class="input-tips">密码</span>
@@ -119,14 +120,6 @@
               <!-- 第二步 -->
               <div v-if="activeStep === 1">
                 <div class="form">
-                  <div class="input-wrapper">
-                    <span class="input-tips">电话</span>
-                    <input v-model="newUser.phone" type="tel" class="ipt" placeholder="+86 123 4567 8910">
-                  </div>
-                  <div class="input-wrapper">
-                    <span class="input-tips">邮箱</span>
-                    <input v-model="newUser.email" type="email" class="ipt" placeholder="example@mail.com">
-                  </div>
 
                   <div class="navigation-buttons">
                     <button class="btnfont" @click="prevStep">上一步</button>
@@ -145,11 +138,11 @@
                   </div>
                   <div class="input-wrapper">
                     <span class="input-tips">收货地址</span>
-                    <input v-model="newUser.email" type="email" class="ipt" placeholder="可暂且跳过">
+                    <input v-model="newUser.address" type="email" class="ipt" placeholder="可暂且跳过">
                   </div>
                   <div class="navigation-buttons">
                     <button class="btn prev-btn" @click="prevStep">上一步</button>
-                    <button class="btn register-btn" :disabled="!agreeTerms" @click="completeRegistration">完成注册</button>
+                    <button class="btn register-btn" @click="completeRegistration" type="submit">完成注册</button>
                   </div>
                 </div>
               </div>
@@ -196,7 +189,7 @@ const activeStep = ref(0);
 // 是否同意条款
 const agreeTerms = ref(false);
 
-const newUser = ref<NewUserVO>({ nickname: '', account: '', password: '', phone: '', email: '' });
+const newUser = ref<NewUserVO>({ name: '', userName: '', password: '',  address: '' });
 const uselogin = ref<LoginUserVO>({ userName: '', password: '' });
 
 // 通知弹窗函数
@@ -215,18 +208,17 @@ function toggleToRegister() {
   isLoginPage.value = false;
   activeStep.value = 0; // 重置注册步骤
   agreeTerms.value = false; // 重置条款同意状态
-  newUser.value = { nickname: '', account: '', password: '', phone: '', email: '' };
+  newUser.value = { name: '', userName: '', password: '', address: '' };
 }
 
 // 切换到登录页面
 function toggleToLogin() {
   isLoginPage.value = true;
   newUser.value = {
-    nickname: '',
-    account: '',
+    name: '',
+    userName: '',
     password: '',
-    phone: '',
-    email: ''
+    address: ''
   };
 }
 
@@ -245,6 +237,11 @@ function prevStep() {
 }
 
 async function completeRegistration() {
+  const { userName, password, name } = newUser.value;
+  if (!userName || !password || !name) {
+    showNotification('警告', '注册的账号或密码或昵称不能为空', 'warning');
+    return;
+  }
   try {
     const result = await registerUserApi(newUser.value);
     console.log('注册成功:', result);
@@ -258,13 +255,10 @@ async function completeRegistration() {
 
 async function handleLogin() {
   const { userName, password } = uselogin.value;
-
-
   if (!userName || !password) {
-    showNotification('警告', '账号或密码不能为空', 'warning');
+    showNotification('警告', '登录的账号或密码不能为空', 'warning');
     return;
   }
-
   try {
     const result = await loginUserApi(uselogin.value);
     console.log(result);

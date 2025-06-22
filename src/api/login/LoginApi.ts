@@ -7,9 +7,9 @@ export interface LoginUserVO {
   password: string;
 }
 
-// 定义登录 API 的 URL
+
 const LOGIN_API_URL = 'http://localhost:8081/tCustomer/login';
-// 定义登录函数
+
 export const loginUserApi = async (user: LoginUserVO) => {
   try {
     const data = qs.stringify(user);
