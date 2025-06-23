@@ -1,103 +1,84 @@
 <template>
   <transition name="page-fade">
+    <div v-if="isComponentMounted" class="common-layout">
+      <div class="service-promises">
+        <div class="service-item">
+          <div class="service-icon">多</div>
+          <div class="service-text">品类齐全，轻松购物</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">快</div>
+          <div class="service-text">多仓直发，极速配送</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">好</div>
+          <div class="service-text">正品行货，精致服务</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">省</div>
+          <div class="service-text">天天低价，畅选无忧</div>
+        </div>
+      </div>
 
-  <div v-if="isComponentMounted" class="common-layout">
-    <div class="service-promises">
-      <div class="service-item">
-        <div class="service-icon">多</div>
-        <div class="service-text">品类齐全，轻松购物</div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">快</div>
-        <div class="service-text">多仓直发，极速配送</div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">好</div>
-        <div class="service-text">正品行货，精致服务</div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">省</div>
-        <div class="service-text">天天低价，畅选无忧</div>
-      </div>
-    </div>
-
-    <el-container>
       <el-container>
-        <el-header class="header">
-          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <el-checkbox v-model="selectAll" @change="handleSelectAllChange" size="large">全选</el-checkbox>
-            <div>
-              <el-pagination
-                background
-                :page-size="pageSize"
-                :total="total"
-                :current-page="currentPage"
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
-              />
-            </div>
-          </div>
-        </el-header>
-        <el-main class="main">
-          <el-scrollbar class="scrollbar-roll">
-            <!-- 使用模拟的后端数据 -->
-            <div v-for="(item, index) in pagedCollectionData" :key="item.id" class="scrollbar-demo-item">
-              <el-checkbox v-model="checkboxStates[index + (currentPage - 1) * pageSize]" size="large"></el-checkbox>
-              <div style="margin-left: 20px; display: flex; flex-direction: column;">
-                <div>{{ item.name }}</div>
-                <div>价格：{{ item.price }}</div>
+        <el-container>
+          <el-header class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <el-checkbox v-model="selectAll" @change="handleSelectAllChange" size="large">全选</el-checkbox>
+              <div>
+                <el-pagination
+                  background
+                  :page-size="pageSize"
+                  :total="total"
+                  :current-page="currentPage"
+                  @current-change="handleCurrentChange"
+                  layout="prev, pager, next"
+                />
               </div>
             </div>
-          </el-scrollbar>
-        </el-main>
+          </el-header>
+          <el-main class="main">
+            <el-scrollbar class="scrollbar-roll">
+              <!-- 使用模拟的后端数据 -->
+              <div v-for="(item, index) in pagedCollectionData" :key="item.id" class="scrollbar-demo-item">
+                <el-checkbox v-model="checkboxStates[index + (currentPage - 1) * pageSize]" size="large"></el-checkbox>
+                <div style="margin-left: 20px; display: flex; flex-direction: column;">
+                  <div>{{ item.name }}</div>
+                  <div>价格：{{ item.price }}</div>
+                </div>
+              </div>
+            </el-scrollbar>
+          </el-main>
+        </el-container>
       </el-container>
-      <el-aside class="aside">
-
-        <div style="height: 400px; box-shadow: var(--el-border-color-light) 0px 0px 10px">
-          <el-splitter layout="vertical">
-            <el-splitter-panel>
-              <div class="demo-panel">1号广告位</div>
-            </el-splitter-panel>
-            <el-splitter-panel>
-              <div class="demo-panel">2号广告位</div>
-            </el-splitter-panel>
-            <el-splitter-panel>
-              <div class="demo-panel">3号广告位</div>
-            </el-splitter-panel>
-          </el-splitter>
+      <!-- 底部服务承诺 -->
+      <div class="service-promises">
+        <div class="service-item">
+          <div class="service-icon">多</div>
+          <div class="service-text">品类齐全，轻松购物</div>
         </div>
-      </el-aside>
-    </el-container>
-    <!-- 底部服务承诺 -->
-    <div class="service-promises">
-      <div class="service-item">
-        <div class="service-icon">多</div>
-        <div class="service-text">品类齐全，轻松购物</div>
+        <div class="service-item">
+          <div class="service-icon">快</div>
+          <div class="service-text">多仓直发，极速配送</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">好</div>
+          <div class="service-text">正品行货，精致服务</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">省</div>
+          <div class="service-text">天天低价，畅选无忧</div>
+        </div>
       </div>
-      <div class="service-item">
-        <div class="service-icon">快</div>
-        <div class="service-text">多仓直发，极速配送</div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">好</div>
-        <div class="service-text">正品行货，精致服务</div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">省</div>
-        <div class="service-text">天天低价，畅选无忧</div>
-      </div>
+
     </div>
-
-  </div>
   </transition>
-
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue';
 
 const isComponentMounted = ref(false);
-
 // 模拟的后端数据
 const collectionData = [
   { id: 1, name: "商品 1", price: 100, image: "image1.jpg" },
@@ -148,7 +129,6 @@ const handleSelectAllChange = (val: boolean) => {
     checkboxStates.value[i] = val;
   }
 };
-
 onMounted(() => {
   isComponentMounted.value = true;
 });
@@ -199,10 +179,10 @@ const handleCurrentChange = (newPage: number) => {
 .aside {
   height: 100%;
   width: 270px;
-  background-color: #53b87e;
+  background-color: skyblue;
   opacity: 0.7;
   color: white;
-  border-radius:0 10px 10px 0; /* 左上角和右上角为圆角，左下角和右下角为直角 */
+  border-radius: 10px 0 0 10px; /* 左上角和右上角为圆角，左下角和右下角为直角 */
   overflow: hidden;
 }
 
@@ -227,7 +207,7 @@ const handleCurrentChange = (newPage: number) => {
 
 .scrollbar-demo-item {
   background-color: rgba(230, 230, 230, 1);
-  width: 97%;
+  width: 1600px;
 }
 .el-checkbox {
   margin-left: 30px;

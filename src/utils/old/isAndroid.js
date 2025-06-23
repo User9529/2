@@ -1,4 +1,6 @@
-module.exports = function() {
-  var ua = navigator.userAgent;
-  return (ua.indexOf("Android") >= 0);
-}
+// isAndroid.js
+const isAndroid = () => {
+  return navigator.userAgent.includes('Android');
+};
+
+export default isAndroid;

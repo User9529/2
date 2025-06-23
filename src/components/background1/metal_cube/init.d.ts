@@ -9,7 +9,7 @@ import objectFS from './glsl/object.fs';
 import normalizeVector2 from '../../../utils/common/normalizeVector2.ts';
 import Force3 from '../../../utils/old/Force3.js';
 import ForceCamera from '../../../utils/old/ForceCamera.js';
-import Util from './util.js';
+import Util from './util.ts';
 
 export default function() {
   const canvas = document.getElementById('canvas-webgl');

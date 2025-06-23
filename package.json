@@ -15,7 +15,7 @@
   "dependencies": {
     "@ykob/js-util": "^2.0.0",
     "axios": "^1.10.0",
-    "element-plus": "2.9.11",
+    "element-plus": "^2.10.0",
     "gl-matrix": "^3.3.0",
     "glsl-easings": "^1.0.0",
     "glsl-inverse": "^1.0.0",

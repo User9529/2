@@ -5,6 +5,7 @@ export interface NewUserVO {
   userName: string;
   password: string;
   address: string;
+  role: number
 }
 
 const REGISTER_API_URL = 'http://127.0.0.1:8081/tCustomer/register';
