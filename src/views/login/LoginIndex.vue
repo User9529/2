@@ -332,22 +332,5 @@ watch(() => lrStore.isLoginPage, (newValue) => {
 @use 'resources/style.scss';
 
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
-.return-login {
-  margin-bottom: 20px;
-  text-align: left;
 
-  .prev-btn {
-    background-color: #f0f2f5;
-    color: #333;
-    border: 1px solid #dcdfe6;
-    padding: 8px 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #e5e9f2;
-    }
-  }
-}
 </style>
